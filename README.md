@@ -14,5 +14,5 @@
 
 # Ссылки:
 
-https://material-ui.com/ru/components/data-grid/ - materialUi
-https://jsonplaceholder.typicode.com/ - тестовые данные
+- https://material-ui.com/ru/components/data-grid/ - materialUi
+- https://jsonplaceholder.typicode.com/ - тестовые данные
