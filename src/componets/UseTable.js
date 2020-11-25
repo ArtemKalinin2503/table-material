@@ -31,9 +31,13 @@ const useStyles = makeStyles(theme => ({
             backgroundColor: '#fffbf2',
             cursor: 'pointer'
         }
+    },
+    searchInput: {
+        width: '75%'
     }
 }))
 
+//Компонент Таблица
 const UseTable = () => {
 
     //Импорт стилей для таблицы
@@ -88,7 +92,6 @@ const UseTable = () => {
             });
             return stabilizedThis.map((el) => el[0]);
         }
-
     }
 
     //Сортировка столбцов
@@ -212,7 +215,7 @@ const UseTable = () => {
                     return items;
                 }
                 else {
-                    return items.filter(x => x.title.toLowerCase().includes(target.value))
+                    return items.filter(x => x.title.toLowerCase().includes(target.value)); //title - это данные по которым фильтруем
                 }
             }
         });
@@ -224,6 +227,7 @@ const UseTable = () => {
                 <Controls.Input
                     label="Search Posts"
                     onChange={handleSearch}
+                    className={classes.searchInput}
                     InputProps={{
                         startAdornment: (
                             <InputAdornment position="start">
