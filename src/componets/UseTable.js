@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {useSelector, useDispatch} from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import {
     Table,
     TableBody,
@@ -8,12 +8,14 @@ import {
     TableHead,
     TablePagination,
     TableSortLabel,
-    Toolbar, InputAdornment
+    Toolbar,
+    InputAdornment,
+    TableContainer
 } from "@material-ui/core";
 import {Search} from "@material-ui/icons";
-import {makeStyles} from "@material-ui/core/styles";
 import {getPostsData} from "../actions/actionsPosts";
 import Controls from "../componets/controls/Controls";
+import {makeStyles} from "@material-ui/core/styles";
 
 //Styles table
 const useStyles = makeStyles(theme => ({
@@ -82,7 +84,7 @@ const UseTable = () => {
     }, [])
 
     //Сортировка столбцов
-    function stableSort(array, comparator) {
+    const stableSort = (array, comparator) => {
         if (array) {
             const stabilizedThis = array.map((el, index) => [el, index]);
             stabilizedThis.sort((a, b) => {
@@ -95,14 +97,14 @@ const UseTable = () => {
     }
 
     //Сортировка столбцов
-    function getComparator(post, postBy) {
+    const getComparator = (post, postBy) => {
         return post === 'desc'
             ? (a, b) => descendingComparator(a, b, postBy)
             : (a, b) => -descendingComparator(a, b, postBy);
     }
 
     //Сортировка столбцов
-    function descendingComparator(a, b, postBy) {
+    const descendingComparator = (a, b, postBy) => {
         if (b[postBy] < a[postBy]) {
             return -1;
         }
@@ -180,28 +182,38 @@ const UseTable = () => {
             .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
     }*/
 
+    //Клик по строке в таблице
+    const handleClickTableRow = (id) => {
+        return (event) => {
+            console.log(event)
+            console.log(`You clicked on row with id ${id}`);
+        }
+    }
+
     //Таблица
     const TblContainer = () => {
         if (postsSuccess) {
             return (
-                <Table className={classes.table}>
-                    <TblHead />
-                    <TableBody>
-                        {
-                            postsAfterPagingAndSorting().map((item, index) => {
-                                return (
-                                    <TableRow key={item.id}>
-                                        <TableCell>{item.userId}</TableCell>
-                                        <TableCell>{item.id}</TableCell>
-                                        <TableCell>{item.title}</TableCell>
-                                        <TableCell>{item.body}</TableCell>
-                                    </TableRow>
-                                )
-                            })
-                        }
-                    </TableBody>
+                <TableContainer>
+                    <Table className={classes.table}>
+                        <TblHead />
+                        <TableBody>
+                            {
+                                postsAfterPagingAndSorting().map((item, index) => {
+                                    return (
+                                        <TableRow key={item.id} onClick={handleClickTableRow(item.id)}>
+                                            <TableCell>{item.userId}</TableCell>
+                                            <TableCell>{item.id}</TableCell>
+                                            <TableCell>{item.title}</TableCell>
+                                            <TableCell>{item.body}</TableCell>
+                                        </TableRow>
+                                    )
+                                })
+                            }
+                        </TableBody>
+                    </Table>
                     <TblPagination />
-                </Table>
+                </TableContainer>
             )
         }
     }
@@ -231,7 +243,7 @@ const UseTable = () => {
                     InputProps={{
                         startAdornment: (
                             <InputAdornment position="start">
-                                <Search/>
+                                <Search />
                             </InputAdornment>
                         )
                     }}
